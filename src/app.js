@@ -1,6 +1,7 @@
 import express from "express";
-import db from "./config/dbConnect.js"
-import livros from "./models/Livro.js"
+import db from "./config/dbConnect.js";
+import livros from "./models/Livro.js";
+import routes from "./routes/index.js";
 
 db.on("error", console.log.bind(console, 'Erro de conexão'));
 db.once("open", () => {
@@ -11,20 +12,7 @@ const app = express();
 
 app.use(express.json()); //recurso para interpretar o que ta chegando via post/put como um objeto para podermos manipular
 
-//const livros = [
-//    { id: 1, "titulo": "Senhor dos Aneis" },
-//    { id: 2, "titulo": "O Hobbit" }
-//]
-
-app.get('/', (req, res) => {
-    res.status(200).send('Curso de Node');
-})
-
-app.get('/livros', (req, res) => {
-    livros.find((err, livros) => {
-        res.status(200).json(livros);
-    })
-})
+routes(app);
 
 app.get('/livros/:id', (req, res) => {
     let index = buscaLivro(req.params.id); //id enviado no endpoint
